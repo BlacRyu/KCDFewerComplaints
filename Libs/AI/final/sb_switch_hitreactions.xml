@@ -1,0 +1,1422 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<BehaviorTrees>
+  <BehaviorTree name="switch_hitReactions">
+    <Variables>
+      <Variable name="subscription" type="hit:subscription:subscription" values="" form="single" />
+      <Variable name="subscriptionIndex" type="_int" values="" form="single" />
+      <Variable name="subscriptionRequest" type="hit:subscription:request" values="" form="single" />
+      <Variable name="subscriptionRequestSenderInfo" type="common:senderInfo" values="" form="single" />
+      <Variable name="subscriptions" type="hit:subscription:subscription" values="" isPersistent="1" form="array" />
+      <Variable name="subscriptions_break" type="_bool" values="" form="single" />
+    </Variables>
+    <Root OneTimeOnly="&quot;false&quot;" FailState="&quot;Recoverable&quot;" saveVersion="2">
+      <Behavior canSkip="1">
+        <Parallel successMode="&quot;Any&quot;" failureMode="&quot;Any&quot;">
+          <While doFail="&quot;false&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <ProcessMessage Atomic="&quot;true&quot;" timeout="&quot;-1&quot;" timeType="&quot;GameTime&quot;" variable="&quot;subscriptionRequest&quot;" senderInfo="&quot;subscriptionRequestSenderInfo&quot;" inbox="&quot;hitSubscriptionRequest&quot;" condition="&quot;&quot;" answerVar="&quot;&quot;">
+              <Sequence>
+                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$subscriptionRequest.callback == $__null&quot;">
+                  <Expression expressions="&quot;$subscriptionRequest.callback = $subscriptionRequestSenderInfo.id&quot;" />
+                </IfCondition>
+                <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$subscriptionRequest.subscribe&quot;" saveVersion="2">
+                  <Then canSkip="1">
+                    <Sequence>
+                      <VarOperation varName="&quot;subscriptions.callback&quot;" targetVarName="&quot;subscriptionIndex&quot;" operation="&quot;Find&quot;" argument="&quot;$subscriptionRequest.callback&quot;" />
+                      <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$subscriptionIndex &lt; 0&quot;">
+                        <VarOperation varName="&quot;subscriptions&quot;" targetVarName="&quot;&quot;" operation="&quot;PushBack&quot;" argument="&quot;callback($subscriptionRequest.callback)&quot;" />
+                      </IfCondition>
+                    </Sequence>
+                  </Then>
+                  <Else canSkip="1">
+                    <For startIndex="&quot;0&quot;" endIndex="&quot;-1&quot;" step="&quot;1&quot;" array="&quot;subscriptions&quot;" iterator="&quot;subscriptionIndex&quot;" value="&quot;subscription&quot;" break="&quot;subscriptions_break&quot;">
+                      <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$subscription.callback == $subscriptionRequest.callback&quot;">
+                        <Sequence>
+                          <VarOperation varName="&quot;subscriptions&quot;" targetVarName="&quot;&quot;" operation="&quot;Erase&quot;" argument="&quot;$subscriptionIndex&quot;" />
+                          <Expression expressions="&quot;$subscriptions_break = true&quot;" />
+                        </Sequence>
+                      </IfCondition>
+                    </For>
+                  </Else>
+                </IfElseCondition>
+              </Sequence>
+            </ProcessMessage>
+          </While>
+          <LODGuardian LODTerm="&quot;OnBoth&quot;" StatProp="&quot;PropagateChild&quot;" saveVersion="2">
+            <LOD canSkip="1">
+              <Wait duration="&quot;-1&quot;" timeType="&quot;GameTime&quot;" doFail="&quot;false&quot;" variation="&quot;&quot;" skipInLOD="&quot;false&quot;" />
+            </LOD>
+            <Detail canSkip="1">
+              <IncludeTree File="&quot;final/sb_switch_hitReactions.xml&quot;" Name="&quot;switch_hitReactions_detail&quot;" nodeLabel="85913040" />
+            </Detail>
+          </LODGuardian>
+        </Parallel>
+      </Behavior>
+    </Root>
+    <ForestContainer />
+    <EditorData>
+      <Variables>
+        <Variable name="subscription" comment="" />
+        <Variable name="subscriptionIndex" comment="" />
+        <Variable name="subscriptionRequest" comment="" />
+        <Variable name="subscriptionRequestSenderInfo" comment="" />
+        <Variable name="subscriptions" comment="" />
+        <Variable name="subscriptions_break" comment="" />
+      </Variables>
+      <ForwardDeclarations />
+      <Root editorPosX="4410" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+        <OutputBreakpoints />
+        <Behavior>
+          <Parallel editorPosX="4630" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+            <OutputBreakpoints />
+            <While editorPosX="4830" editorPosY="-4020" isCollapsed="0" hasInputBreakpoint="0" comment="Subscriptions" breakpointFlags="0">
+              <OutputBreakpoints />
+              <ProcessMessage editorPosX="5020" editorPosY="-4020" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                <OutputBreakpoints />
+                <Sequence editorPosX="5250" editorPosY="-4020" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <IfCondition editorPosX="5370" editorPosY="-4310" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <Expression editorPosX="5570" editorPosY="-4310" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </Expression>
+                  </IfCondition>
+                  <IfElseCondition editorPosX="5370" editorPosY="-4020" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                    <OutputBreakpoints />
+                    <Then>
+                      <Sequence editorPosX="5570" editorPosY="-4070" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <VarOperation editorPosX="5690" editorPosY="-4170" isCollapsed="0" hasInputBreakpoint="0" comment="Duplicity check" breakpointFlags="0">
+                          <OutputBreakpoints />
+                        </VarOperation>
+                        <IfCondition editorPosX="5690" editorPosY="-4070" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <VarOperation editorPosX="5900" editorPosY="-4070" isCollapsed="0" hasInputBreakpoint="0" comment="Subscribe" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </VarOperation>
+                        </IfCondition>
+                      </Sequence>
+                    </Then>
+                    <Else>
+                      <For editorPosX="5570" editorPosY="-3960" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <IfCondition editorPosX="5760" editorPosY="-3960" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <Sequence editorPosX="5960" editorPosY="-3960" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <VarOperation editorPosX="6080" editorPosY="-4010" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                            </VarOperation>
+                            <Expression editorPosX="6080" editorPosY="-3910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                            </Expression>
+                          </Sequence>
+                        </IfCondition>
+                      </For>
+                    </Else>
+                  </IfElseCondition>
+                </Sequence>
+              </ProcessMessage>
+            </While>
+            <LODGuardian editorPosX="4820" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+              <OutputBreakpoints />
+              <LOD>
+                <Wait editorPosX="5080" editorPosY="-140" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                </Wait>
+              </LOD>
+              <Detail>
+                <IncludeTree editorPosX="5080" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                </IncludeTree>
+              </Detail>
+            </LODGuardian>
+          </Parallel>
+        </Behavior>
+      </Root>
+      <Forest />
+      <Comments />
+    </EditorData>
+  </BehaviorTree>
+  <BehaviorTree name="switch_hitReactions_detail">
+    <Variables>
+      <Variable name="actualTime" type="_int64" values="" form="single" />
+      <Variable name="assaultInformation" type="combat:assaultInformation" values="" form="single" />
+      <Variable name="assaultPerceptibleParams" type="perceptibleParams" values="" form="single" />
+      <Variable name="assaultPerceptibleVolume" type="common:wuid" values="" form="single" />
+      <Variable name="assaultVolumeData" type="combat:assaultVolumeData" values="" form="single" />
+      <Variable name="attacker" type="common:wuid" values="" form="single" />
+      <Variable name="attackerInventory" type="common:wuid" values="" form="single" />
+      <Variable name="attackerIsArmed" type="_bool" values="" form="single" />
+      <Variable name="attackerIsHostile" type="_bool" values="" form="single" />
+      <Variable name="attackerType" type="_string" values="" form="single" />
+      <Variable name="carrier" type="common:wuid" values="" form="single" />
+      <Variable name="distSq" type="_float" values="" form="single" />
+      <Variable name="dotMissileHit" type="_float" values="" form="single" />
+      <Variable name="dotPlayerAttackNearMiss" type="_float" values="" form="single" />
+      <Variable name="health" type="_float" values="" form="single" />
+      <Variable name="healthStatusSubscription" type="healthStatus:subscription" values="" form="single" />
+      <Variable name="healthStatusSubscriptionIterator" type="_int" values="" form="single" />
+      <Variable name="hit" type="combat:hit" values="" form="single" />
+      <Variable name="hitReaction" type="hitReaction" values="" form="single" />
+      <Variable name="hitRecipientIsEnemy" type="_bool" values="" form="single" />
+      <Variable name="isDudeBestFriend" type="_bool" values="" form="single" />
+      <Variable name="isHostile" type="_bool" values="" form="single" />
+      <Variable name="isKnockOutByPlayer" type="_bool" values="false" form="single" />
+      <Variable name="isKnockOutByPlayerAndSeen" type="_bool" values="" form="single" />
+      <Variable name="isPlayerInCombatWithAHostileToMe" type="_bool" values="" form="single" />
+      <Variable name="lastHitByPlayer" type="combat:lastHitByPlayer" values="" form="single" />
+      <Variable name="playerArrowFlyby" type="weapon:onPlayerArrowFlyingBy" values="" form="single" />
+      <Variable name="playerAttackNearMiss" type="combat:playerAttackNearMiss" values="" form="single" />
+      <Variable name="playerIsHostile" type="_bool" values="" form="single" />
+      <Variable name="rider" type="common:wuid" values="" form="single" />
+      <Variable name="riderPlayer" type="common:wuid" values="" form="single" />
+      <Variable name="soundIntensityMultiplier" type="_float" values="" form="single" />
+      <Variable name="stamina" type="_float" values="" form="single" />
+      <Variable name="stimulus_hit" type="combat:stimulus:hit" values="" form="single" />
+      <Variable name="subscription" type="hit:subscription:subscription" values="" form="single" />
+      <Variable name="subscriptionIndex" type="_int" values="" form="single" />
+      <Variable name="subscriptions_break" type="_bool" values="" form="single" />
+      <Variable name="suppressAssaultReactions" type="_bool" values="" form="single" />
+      <Variable name="t_checkAssaultSuppression_entity1" type="common:wuid" values="" form="single" />
+      <Variable name="t_checkAssaultSuppression_entity2" type="common:wuid" values="" form="single" />
+      <Variable name="t_checkAssaultSuppression_result" type="crime:suppressAssaultReactions" values="" form="single" />
+      <Variable name="t_checkHasMeleeWeaponDrawn_entity" type="common:wuid" values="" form="single" />
+      <Variable name="t_checkIsDudeBestFriendForever_entity" type="common:wuid" values="" form="single" />
+      <Variable name="t_dropItems_dropWeapons" type="_bool" values="false" form="single" />
+      <Variable name="time" type="_int64" values="" form="single" />
+    </Variables>
+    <Root OneTimeOnly="&quot;false&quot;" FailState="&quot;Recoverable&quot;" saveVersion="2">
+      <Behavior canSkip="1">
+        <Parallel successMode="&quot;Any&quot;" failureMode="&quot;Any&quot;">
+          <While doFail="&quot;false&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <ProcessMessage Atomic="&quot;true&quot;" timeout="&quot;-1&quot;" timeType="&quot;GameTime&quot;" variable="&quot;hitReaction&quot;" senderInfo="&quot;&quot;" inbox="&quot;hitReaction&quot;" condition="&quot;&quot;" answerVar="&quot;&quot;">
+              <Sequence>
+                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.hitType == $enum:HitReactionType.MeleeStealth&quot;">
+                  <Expression expressions="&quot;$hitReaction.hitStrength = $enum:HitReactionStrength.MajorInjury&quot;" />
+                </IfCondition>
+                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$b_context[&apos;suppressHitReactions&apos;]&quot;">
+                  <Selector>
+                    <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hitReaction.hitType == $enum:HitReactionType.Collision&quot;">
+                      <IsDeadCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                        <Then canSkip="1">
+                          <Sequence>
+                            <GetType WUID="&quot;hitReaction.attacker&quot;" OutString="&quot;attackerType&quot;" ShowTrueIdentity="&quot;false&quot;" TreatPlayerAsNPC="&quot;true&quot;" />
+                            <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$attackerType == &apos;NHNPC&apos;&quot;">
+                              <Sequence>
+                                <GraphSearch Origin="&quot;hitReaction.attacker&quot;" Borders="&quot;&quot;" depth="&quot;1&quot;" selection="&quot;true&quot;" SearchPattern="&quot;Depth&quot;" EdgePruning="&quot;parent,inventory&quot;" AllowedEdges="&quot;&quot;" SubGraph="&quot;&quot;" AllowSubtraph="&quot;false&quot;" includeOrigin="&quot;false&quot;" excludeOrigin="&quot;false&quot;" failOnEmpty="&quot;false&quot;" SetOperationChoice="&quot;Intersection|And&quot;" errorOnEmpty="&quot;false&quot;" shortCircuit="&quot;false&quot;" skipTraversed="&quot;true&quot;">
+                                  <LinkTagFilter tag="&quot;rider&quot;" prune="&quot;true&quot;" negprune="&quot;unknown&quot;" Parent="&quot;&quot;" Child="&quot;riderPlayer&quot;" Data="&quot;&quot;" />
+                                </GraphSearch>
+                                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$riderPlayer == $__player&quot;">
+                                  <InstantSendMessageToNPC target="this.id" type="combat:hit" values="attacker($__player), strength($hitReaction.hitStrength), hitType($enum:HitReactionType.Melee), real(true)" />
+                                </IfCondition>
+                              </Sequence>
+                            </IfCondition>
+                          </Sequence>
+                        </Then>
+                        <Else canSkip="1">
+                          <Sequence>
+                            <IsEnemy observer="&quot;__player&quot;" target="&quot;this.id&quot;" enemyOut="&quot;hitRecipientIsEnemy&quot;" />
+                            <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$hitRecipientIsEnemy&quot;">
+                              <Sequence>
+                                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.attacker == $__player&quot;">
+                                  <HasPerceptionEnabled WUID="&quot;&quot;" Type="&quot;Perceptor&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                                    <Then canSkip="1">
+                                      <HasPerceptionEnabled WUID="&quot;__player&quot;" Type="&quot;Perceptible&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                                        <Then canSkip="1">
+                                          <InstantSendMessageToNPC target="this.id" type="awareness:impulse" values="entity($hitReaction.attacker)" /> <!-- Probably tells the NPC to stagger / move out of the way when you bump into them -->
+                                        </Then>
+                                      </HasPerceptionEnabled>
+                                    </Then>
+                                  </HasPerceptionEnabled>
+                                </IfCondition>
+                                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$b_inCombat &amp; !$b_context[&apos;suppressCollisionsBark&apos;]&quot;">
+                                  <Selector>
+                                    <Sequence>
+                                      <GraphSearch Origin="&quot;hitReaction.attacker&quot;" Borders="&quot;&quot;" depth="&quot;1&quot;" selection="&quot;true&quot;" SearchPattern="&quot;Depth&quot;" EdgePruning="&quot;parent,inventory&quot;" AllowedEdges="&quot;&quot;" SubGraph="&quot;&quot;" AllowSubtraph="&quot;false&quot;" includeOrigin="&quot;false&quot;" excludeOrigin="&quot;false&quot;" failOnEmpty="&quot;true&quot;" SetOperationChoice="&quot;Intersection|And&quot;" errorOnEmpty="&quot;false&quot;" shortCircuit="&quot;false&quot;" skipTraversed="&quot;true&quot;">
+                                        <LinkTagFilter tag="&quot;rider&quot;" prune="&quot;true&quot;" negprune="&quot;unknown&quot;" Parent="&quot;&quot;" Child="&quot;rider&quot;" Data="&quot;&quot;" />
+                                      </GraphSearch>
+                                      <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$rider == $__player&quot;">
+                                        <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.hitStrength &gt; $enum:HitReactionStrength.Tickle&quot;">
+                                          <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;KOLIZE_S_HRACEM_NA_KONI&apos;), lookAtId($hitReaction.attacker)" /> <!-- Probably tells the NPC to complain that the player bumped into them while on a horse -->
+                                        </IfCondition>
+                                      </IfCondition>
+                                    </Sequence>
+                                    <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.attacker == $__player &amp; $hitReaction.hitStrength &gt; $enum:HitReactionStrength.Tickle&quot;">
+                                      <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.hitStrength &gt; $enum:HitReactionStrength.Unpleasant&quot;" saveVersion="2">
+                                        <Then canSkip="1">
+                                          <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;KOLIZE_S_HRACEM&apos;), lookAtId($hitReaction.attacker)" /> <!-- Major collision -->
+                                        </Then>
+                                        <Else canSkip="1">
+                                          <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;KOLIZE_S_HRACEM_LEHKA&apos;), lookAtId($hitReaction.attacker)" /> <!-- Minor collision -->
+                                        </Else>
+                                      </IfElseCondition>
+                                    </IfCondition>
+                                  </Selector>
+                                </IfCondition>
+                              </Sequence>
+                            </IfCondition>
+                          </Sequence>
+                        </Else>
+                      </IsDeadCheck>
+                    </IfCondition>
+                    <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$hitReaction.attacker == $__player&quot;" saveVersion="2">
+                      <Then canSkip="1">
+                        <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hitReaction.hitStrength == $enum:HitReactionStrength.Zero&quot;">
+                          <Success />
+                        </IfCondition>
+                      </Then>
+                      <Else canSkip="1">
+                        <Sequence>
+                          <IsEnemy observer="&quot;this.id&quot;" target="&quot;hitReaction.attacker&quot;" enemyOut="&quot;attackerIsHostile&quot;" />
+                          <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;!$attackerIsHostile&quot;">
+                            <Invertor>
+                              <GraphSearch Origin="&quot;&quot;" Borders="&quot;&quot;" depth="&quot;1&quot;" selection="&quot;true&quot;" SearchPattern="&quot;Depth&quot;" EdgePruning="&quot;parent,inventory&quot;" AllowedEdges="&quot;&quot;" SubGraph="&quot;&quot;" AllowSubtraph="&quot;false&quot;" includeOrigin="&quot;false&quot;" excludeOrigin="&quot;false&quot;" failOnEmpty="&quot;true&quot;" SetOperationChoice="&quot;Intersection|And&quot;" errorOnEmpty="&quot;false&quot;" shortCircuit="&quot;false&quot;" skipTraversed="&quot;true&quot;">
+                                <LinkTagFilter tag="&quot;suppressFriendlyFireFrom&quot;" prune="&quot;true&quot;" negprune="&quot;unknown&quot;" Parent="&quot;&quot;" Child="&quot;&quot;" Data="&quot;&quot;" />
+                                <WUIDFilter WUID="&quot;hitReaction.attacker&quot;" Source="&quot;Child&quot;" prune="&quot;true&quot;" negprune="&quot;unknown&quot;" Parent="&quot;&quot;" Child="&quot;&quot;" />
+                              </GraphSearch>
+                            </Invertor>
+                          </IfCondition>
+                        </Sequence>
+                      </Else>
+                    </IfElseCondition>
+                    <InstantSendMessageToNPC target="this.id" type="combat:hit" values="attacker($hitReaction.attacker), strength($hitReaction.hitStrength), hitType($hitReaction.hitType), real(true)" />
+                  </Selector>
+                </IfCondition>
+                <For startIndex="&quot;0&quot;" endIndex="&quot;-1&quot;" step="&quot;1&quot;" array="&quot;subscriptions&quot;" iterator="&quot;&quot;" value="&quot;subscription&quot;" break="&quot;&quot;">
+                  <InstantSendMessageToNPC target="subscription.callback" type="hit:subscription:event" values="entity($this.id), attacker($hitReaction.attacker), hitStrength($hitReaction.hitStrength), hitType($hitReaction.hitType)" />
+                </For>
+              </Sequence>
+            </ProcessMessage>
+          </While>
+          <While doFail="&quot;false&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <ProcessMessage Atomic="&quot;true&quot;" timeout="&quot;-1&quot;" timeType="&quot;GameTime&quot;" variable="&quot;playerAttackNearMiss&quot;" senderInfo="&quot;&quot;" inbox="&quot;combatPlayerAttackNearMiss&quot;" condition="&quot;&quot;" answerVar="&quot;&quot;">
+              <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$b_context[&apos;suppressNearMissReactions&apos;]&quot;">
+                <Sequence>
+                  <NumericalOperation In1VariableName="this.id" In2VariableName="__player" In3VariableName="" OutVariableName="dotPlayerAttackNearMiss" Operation="dot(w1_look_dir, w1_to_w2_dir)" />
+                  <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$dotPlayerAttackNearMiss &gt; -0.25&quot;">
+                    <LuaGate code="&quot;return player.human:IsWeaponDrawn()&quot;" saveVersion="2">
+                      <Then canSkip="1">
+                        <InstantSendMessageToNPC target="this.id" type="combat:hit" values="attacker($playerAttackNearMiss.attacker), strength(1), hitType($enum:HitReactionType.Melee), real(false)" /> <!-- Nearly hitting somebody with a weapon? -->
+                      </Then>
+                      <Else canSkip="1">
+                        <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;ZASAH_ZBRANI_IGNOROVANY&apos;), lookAtId($__player)" /> <!-- Nearly punched someone? -->
+                      </Else>
+                    </LuaGate>
+                  </IfCondition>
+                </Sequence>
+              </IfCondition>
+            </ProcessMessage>
+          </While>
+          <While doFail="&quot;false&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <ProcessMessage Atomic="&quot;true&quot;" timeout="&quot;-1&quot;" timeType="&quot;GameTime&quot;" variable="&quot;playerArrowFlyby&quot;" senderInfo="&quot;&quot;" inbox="&quot;weaponOnPlayerArrowFlyingBy&quot;" condition="&quot;&quot;" answerVar="&quot;&quot;">
+              <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$b_context[&apos;suppressArrowFlybyReactions&apos;]&quot;">
+                <InstantSendMessageToNPC target="this.id" type="combat:hit" values="attacker($__player), strength(1), hitType($enum:HitReactionType.Bullet), real(false)" /> <!-- Nearly shot somebody with an arrow? -->
+              </IfCondition>
+            </ProcessMessage>
+          </While>
+          <While doFail="&quot;true&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <ProcessMessage Atomic="&quot;true&quot;" timeout="&quot;-1&quot;" timeType="&quot;GameTime&quot;" variable="&quot;hit&quot;" senderInfo="&quot;&quot;" inbox="&quot;combatHit&quot;" condition="&quot;&quot;" answerVar="&quot;&quot;">
+              <Selector>
+                <Sequence>
+                  <GraphSearch Origin="&quot;&quot;" Borders="&quot;&quot;" depth="&quot;1&quot;" selection="&quot;true&quot;" SearchPattern="&quot;Depth&quot;" EdgePruning="&quot;parent,inventory&quot;" AllowedEdges="&quot;&quot;" SubGraph="&quot;bodyCarrier&quot;" AllowSubtraph="&quot;false&quot;" includeOrigin="&quot;false&quot;" excludeOrigin="&quot;false&quot;" failOnEmpty="&quot;true&quot;" SetOperationChoice="&quot;Intersection|And&quot;" errorOnEmpty="&quot;false&quot;" shortCircuit="&quot;false&quot;" skipTraversed="&quot;true&quot;">
+                    <LinkTagFilter tag="&quot;bodyCarrier&quot;" prune="&quot;true&quot;" negprune="&quot;unknown&quot;" Parent="&quot;&quot;" Child="&quot;carrier&quot;" Data="&quot;&quot;" />
+                  </GraphSearch>
+                  <Expression expressions="&quot;$hit.real = false&quot;" />
+                  <InstantSendMessageToNPC target="carrier" variable="hit" />
+                </Sequence>
+                <Sequence>
+                  <GetTime TimeType="&quot;GameTime&quot;" OutVar="&quot;time&quot;" Delta="&quot;&quot;" />
+                  <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$b_deathTime &gt; 0 &amp; $b_deathTime &lt; $time - 4000&quot;">
+                    <Success />
+                  </IfCondition>
+                </Sequence>
+                <Sequence>
+                  <ExecuteLua code="&quot;data.health = entity.soul:GetState(&apos;health&apos;) &#10;data.stamina = entity.soul:GetState(&apos;stamina&apos;)&quot;" />
+                  <IsDeadCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                    <Then canSkip="1">
+                      <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.Melee | $hit.hitType == $enum:HitReactionType.Bullet&quot;">
+                        <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;RANENY_NA_ZEMI&apos;)" /> <!-- injured by an attack -->
+                      </IfCondition>
+                    </Then>
+                  </IsDeadCheck>
+                  <Selector>
+                    <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                      <Sequence>
+                        <Expression expressions="&quot;$t_checkIsDudeBestFriendForever_entity = $this.id&quot;" />
+                        <IncludeTree File="&quot;final/combatUtils.xml&quot;" Name="&quot;checkIsDudeBestFriendForever&quot;" nodeLabel="30565222" /> <!-- lol, variable names -->
+                        <Expression expressions="&quot;$isDudeBestFriend = true&quot;" />
+                      </Sequence>
+                    </IfCondition>
+                    <Expression expressions="&quot;$isDudeBestFriend = false&quot;" />
+                  </Selector>
+                  <Switch>
+                    <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.Melee | $hit.hitType == $enum:HitReactionType.MeleeStealth&quot;">
+                      <Sequence>
+                        <Expression expressions="&quot;$isKnockOutByPlayer = false, &#10;$isKnockOutByPlayerAndSeen = false&quot;" />
+                        <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.MeleeStealth&quot;">
+                          <IsUnconsciousCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                            <Then canSkip="1">
+                              <Sequence>
+                                <GetTime TimeType="&quot;GameTime&quot;" OutVar="&quot;actualTime&quot;" Delta="&quot;&quot;" />
+                                <Expression expressions="&quot;$isKnockOutByPlayer = true&quot;" />
+                                <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;($isKnockOutByPlayer &amp; ($b_playerLastSeenTime + 4000 &gt; $actualTime))&quot;">
+                                  <Expression expressions="&quot;$isKnockOutByPlayerAndSeen = true&quot;" />
+                                </IfCondition>
+                              </Sequence>
+                            </Then>
+                          </IsUnconsciousCheck>
+                        </IfCondition>
+                        <Sequence>
+                          <SuppressFailure>
+                            <Sequence>
+                              <Expression expressions="&quot;$attackerIsArmed = false, &#10;$t_checkHasMeleeWeaponDrawn_entity = $hit.attacker&quot;" />
+                              <IncludeTree File="&quot;final/sb_combat.xml&quot;" Name="&quot;checkHasMeleeWeaponDrawn&quot;" nodeLabel="56418481" />
+                              <Expression expressions="&quot;$attackerIsArmed = true&quot;" />
+                            </Sequence>
+                          </SuppressFailure>
+                          <Sequence>
+                            <Expression expressions="&quot;$t_checkAssaultSuppression_entity1 = $this.id, &#10;$t_checkAssaultSuppression_entity2 = $hit.attacker, &#10;$suppressAssaultReactions = true&quot;" />
+                            <Selector>
+                              <IncludeTree File="&quot;final/sb_combat.xml&quot;" Name="&quot;checkAssaultSuppression&quot;" nodeLabel="10016806" />
+                              <Expression expressions="&quot;$suppressAssaultReactions = false&quot;" />
+                            </Selector>
+                          </Sequence>
+                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$isKnockOutByPlayer | $isKnockOutByPlayerAndSeen&quot;">
+                            <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.attacker == $__player &amp; !$b_context[&apos;suppressReputationHitOnDudeHit&apos;] &amp; !$isDudeBestFriend&quot;">
+                              <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$suppressAssaultReactions &amp; $t_checkAssaultSuppression_result.suppressReputationHit&quot;" saveVersion="2">
+                                <Else canSkip="1">
+                                  <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.real&quot;">
+                                    <LuaGate code="&quot;return entity.soul:GetRelationship(player.this.id) &lt; -0.35&quot;" saveVersion="2">
+                                      <Then canSkip="1">
+                                        <Success />
+                                      </Then>
+                                      <Else canSkip="1">
+                                        <Switch>
+                                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.strength &gt;= 6&quot;">
+                                            <SetReputationNPC NPC="&quot;&quot;" reputationChange="&quot;hit_melee_brutal&quot;" />
+                                          </IfCondition>
+                                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.strength &gt;= 4&quot;">
+                                            <SetReputationNPC NPC="&quot;&quot;" reputationChange="&quot;hit_melee_strong&quot;" />
+                                          </IfCondition>
+                                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.strength &gt;= 3&quot;">
+                                            <SetReputationNPC NPC="&quot;&quot;" reputationChange="&quot;hit_melee_medium&quot;" />
+                                          </IfCondition>
+                                          <DefaultBranch>
+                                            <SetReputationNPC NPC="&quot;&quot;" reputationChange="&quot;hit_melee_weak&quot;" />
+                                          </DefaultBranch>
+                                        </Switch>
+                                      </Else>
+                                    </LuaGate>
+                                  </IfCondition>
+                                </Else>
+                              </IfElseCondition>
+                            </IfCondition>
+                          </IfCondition>
+                          <Selector>
+                            <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                              <Sequence>
+                                <IsEnemy observer="&quot;this.id&quot;" target="&quot;__player&quot;" enemyOut="&quot;playerIsHostile&quot;" />
+                                <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;($suppressAssaultReactions &amp; $t_checkAssaultSuppression_result.suppressReputationPrevent) | $b_context[&apos;suppressReputationPreventForDudeHits&apos;]&quot;" saveVersion="2">
+                                  <Then canSkip="1">
+                                    <Fail />
+                                  </Then>
+                                  <Else canSkip="1">
+                                    <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;!$playerIsHostile &amp; !$b_inCombat&quot;">
+                                      <Sequence>
+                                        <InstantSendMessageToNPC target="this.id" type="dialog:monologRequest" values="metarole(&apos;ZASAH_ZBRANI_IGNOROVANY&apos;), lookAtId($__player)" />
+                                        <Fail />
+                                      </Sequence>
+                                    </IfCondition>
+                                  </Else>
+                                </IfElseCondition>
+                              </Sequence>
+                            </IfCondition>
+                            <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hit.attacker == $__player &amp; $isDudeBestFriend&quot;">
+                              <Success />
+                            </IfCondition>
+                            <Sequence>
+                              <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;(!$suppressAssaultReactions | !$t_checkAssaultSuppression_result.suppressExternalReactions) &amp; $b_soul.caste &lt;= $enum:caste.normal&quot;">
+                                <Sequence>
+                                  <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.MeleeStealth&quot;" saveVersion="2">
+                                    <Then canSkip="1">
+                                      <ExecuteLua code="&quot;local multiplierForMinStealth = RPG.MinStealthHitSoundMultiplier &#10;local multiplierForMaxStealth = RPG.MaxStealthHitSoundMultiplier &#10; &#10;local stealth = player.soul:GetSkillLevel(&apos;stealth&apos;) &#10;local relativeStealth = stealth / RPG.SkillCap &#10; &#10;data.soundIntensityMultiplier = math.lerp(multiplierForMinStealth, multiplierForMaxStealth, relativeStealth)&quot;" />
+                                    </Then>
+                                    <Else canSkip="1">
+                                      <Expression expressions="&quot;$soundIntensityMultiplier = 1&quot;" />
+                                    </Else>
+                                  </IfElseCondition>
+                                  <ProduceSound Sound="&quot;combatScript&quot;" Position="&quot;this.id&quot;" Multiplier="&quot;$soundIntensityMultiplier&quot;" />
+                                </Sequence>
+                              </IfCondition>
+                              <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                                <ExecuteSoundTrigger entity="&quot;&quot;" triggerName="&quot;player_caused_damage_to_npc&quot;" stop="&quot;false&quot;" />
+                              </IfCondition>
+                              <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                                <Sequence>
+                                  <VarOperation varName="&quot;lastHitByPlayer&quot;" targetVarName="&quot;&quot;" operation="&quot;Reinit&quot;" argument="&quot;&quot;" />
+                                  <GetTime TimeType="&quot;GameTime&quot;" OutVar="&quot;lastHitByPlayer.time&quot;" Delta="&quot;&quot;" />
+                                  <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.MeleeStealth&quot;" saveVersion="2">
+                                    <Then canSkip="1">
+                                      <Expression expressions="&quot;$lastHitByPlayer.kind = $enum:combatAttackKind.stealthAction&quot;" />
+                                    </Then>
+                                    <Else canSkip="1">
+                                      <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$attackerIsArmed&quot;" saveVersion="2">
+                                        <Then canSkip="1">
+                                          <Expression expressions="&quot;$lastHitByPlayer.kind = $enum:combatAttackKind.melee&quot;" />
+                                        </Then>
+                                        <Else canSkip="1">
+                                          <Expression expressions="&quot;$lastHitByPlayer.kind = $enum:combatAttackKind.unarmed&quot;" />
+                                        </Else>
+                                      </IfElseCondition>
+                                    </Else>
+                                  </IfElseCondition>
+                                  <AddLink From="&quot;__player&quot;" To="&quot;this.id&quot;" Tag="&quot;lastHitByPlayer&quot;" Data="&quot;($lastHitByPlayer)&quot;" LinkOpHandleMode="&quot;OverWrite&quot;" />
+                                </Sequence>
+                              </IfCondition>
+                              <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;!$isKnockOutByPlayer&quot;" saveVersion="2">
+                                <Then canSkip="1">
+                                  <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$suppressAssaultReactions &amp; $t_checkAssaultSuppression_result.suppressHitStimulus&quot;" saveVersion="2">
+                                    <Else canSkip="1">
+                                      <IsDeadCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                                        <Else canSkip="1">
+                                          <IsUnconsciousCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                                            <Else canSkip="1">
+                                              <Sequence>
+                                                <VarOperation varName="&quot;stimulus_hit&quot;" targetVarName="&quot;&quot;" operation="&quot;Reinit&quot;" argument="&quot;&quot;" />
+                                                <Expression expressions="&quot;$stimulus_hit.attacker = $hit.attacker, &#10;$stimulus_hit.real = $hit.real&quot;" />
+                                                <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$attackerIsArmed == true&quot;" saveVersion="2">
+                                                  <Then canSkip="1">
+                                                    <Expression expressions="&quot;$stimulus_hit.kind = $enum:combatAttackKind.melee&quot;" />
+                                                  </Then>
+                                                  <Else canSkip="1">
+                                                    <Expression expressions="&quot;$stimulus_hit.kind = $enum:combatAttackKind.unarmed&quot;" />
+                                                  </Else>
+                                                </IfElseCondition>
+                                                <InstantSendMessageToNPC target="this.id" variable="stimulus_hit" />
+                                              </Sequence>
+                                            </Else>
+                                          </IsUnconsciousCheck>
+                                        </Else>
+                                      </IsDeadCheck>
+                                    </Else>
+                                  </IfElseCondition>
+                                </Then>
+                                <Else canSkip="1">
+                                  <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$isKnockOutByPlayerAndSeen&quot;">
+                                    <Sequence>
+                                      <Expression expressions="&quot;$assaultInformation.kind = $enum:combatAttackKind.stealthAction, &#10;$assaultInformation.victimKind = $enum:assaultVictimKind.npc&quot;" />
+                                      <CreateInformation PerceivedWuid="&quot;this.id&quot;" label="&quot;assault&quot;" position="&quot;&quot;" ToWhom="&quot;&quot;" OutVariable="&quot;assaultInformation&quot;" />
+                                    </Sequence>
+                                  </IfCondition>
+                                </Else>
+                              </IfElseCondition>
+                              <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;($suppressAssaultReactions &amp; $t_checkAssaultSuppression_result.suppressExternalReactions)&quot;" saveVersion="2">
+                                <Then canSkip="1">
+                                  <Success />
+                                </Then>
+                                <Else canSkip="1">
+                                  <Sequence>
+                                    <Expression expressions="&quot;$assaultPerceptibleParams.conspicuousness = 1, &#10;$assaultPerceptibleParams.visibility = 1&quot;" />
+                                    <SpawnExpiringPerceptibleVolume Expiration="&quot;6s&quot;" TimerType="&quot;GameTime&quot;" Position="&quot;this.id&quot;" Radius="&quot;1.000000&quot;" Height="&quot;1.000000&quot;" Label="&quot;assault&quot;" OnlyVisiblePointsFromCenter="&quot;false&quot;" PerceptibleParams="&quot;assaultPerceptibleParams&quot;" OutWuid="&quot;assaultPerceptibleVolume&quot;" />
+                                    <IgnorePerception PerceptorObject="&quot;hit.attacker&quot;" PerceptibleObject="&quot;assaultPerceptibleVolume&quot;" IgnoreFor="&quot;-1&quot;" TimerType="&quot;GameTime&quot;" Uninterruptible="&quot;true&quot;" />
+                                    <IgnorePerception PerceptorObject="&quot;this.id&quot;" PerceptibleObject="&quot;assaultPerceptibleVolume&quot;" IgnoreFor="&quot;-1&quot;" TimerType="&quot;GameTime&quot;" Uninterruptible="&quot;true&quot;" />
+                                    <VarOperation varName="&quot;assaultVolumeData&quot;" targetVarName="&quot;&quot;" operation="&quot;Reinit&quot;" argument="&quot;&quot;" />
+                                    <Expression expressions="&quot;$assaultVolumeData.attacker = $hit.attacker, &#10;$assaultVolumeData.victim = $this.id, &#10;$assaultVolumeData.victimKind = $enum:assaultVictimKind.npc&quot;" />
+                                    <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.MeleeStealth&quot;" saveVersion="2">
+                                      <Then canSkip="1">
+                                        <Expression expressions="&quot;$assaultVolumeData.kind = $enum:combatAttackKind.stealthAction&quot;" />
+                                      </Then>
+                                      <Else canSkip="1">
+                                        <IfElseCondition failOnCondition="&quot;false&quot;" condition="&quot;$attackerIsArmed&quot;" saveVersion="2">
+                                          <Then canSkip="1">
+                                            <Expression expressions="&quot;$assaultVolumeData.kind = $enum:combatAttackKind.melee&quot;" />
+                                          </Then>
+                                          <Else canSkip="1">
+                                            <Expression expressions="&quot;$assaultVolumeData.kind = $enum:combatAttackKind.unarmed&quot;" />
+                                          </Else>
+                                        </IfElseCondition>
+                                      </Else>
+                                    </IfElseCondition>
+                                    <AddLink From="&quot;assaultPerceptibleVolume&quot;" To="&quot;assaultPerceptibleVolume&quot;" Tag="&quot;assaultVolumeData&quot;" Data="&quot;($assaultVolumeData)&quot;" LinkOpHandleMode="&quot;Error&quot;" />
+                                  </Sequence>
+                                </Else>
+                              </IfElseCondition>
+                            </Sequence>
+                          </Selector>
+                        </Sequence>
+                      </Sequence>
+                    </IfCondition>
+                    <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.hitType == $enum:HitReactionType.Bullet&quot;">
+                      <Selector>
+                        <IfCondition failOnCondition="&quot;true&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                          <IncludeTree File="&quot;final/combatUtils.xml&quot;" Name="&quot;checkIgnoreMissileHitFromDude&quot;" nodeLabel="48156566" />
+                        </IfCondition>
+                        <Sequence>
+                          <Sequence>
+                            <Expression expressions="&quot;$t_checkAssaultSuppression_entity1 = $this.id, &#10;$t_checkAssaultSuppression_entity2 = $hit.attacker, &#10;$suppressAssaultReactions = true&quot;" />
+                            <Selector>
+                              <IncludeTree File="&quot;final/sb_combat.xml&quot;" Name="&quot;checkAssaultSuppression&quot;" nodeLabel="46241425" />
+                              <Expression expressions="&quot;$suppressAssaultReactions = false&quot;" />
+                            </Selector>
+                          </Sequence>
+                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;$hit.attacker == $__player&quot;">
+                            <ExecuteSoundTrigger entity="&quot;&quot;" triggerName="&quot;player_caused_damage_to_npc&quot;" stop="&quot;false&quot;" />
+                          </IfCondition>
+                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$suppressAssaultReactions | !$t_checkAssaultSuppression_result.suppressHitStimulus&quot;">
+                            <IsDeadCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                              <Else canSkip="1">
+                                <Sequence>
+                                  <VarOperation varName="&quot;stimulus_hit&quot;" targetVarName="&quot;&quot;" operation="&quot;Reinit&quot;" argument="&quot;&quot;" />
+                                  <Expression expressions="&quot;$stimulus_hit.attacker = $hit.attacker, &#10;$stimulus_hit.kind = $enum:combatAttackKind.missile, &#10;$stimulus_hit.real = $hit.real&quot;" />
+                                  <InstantSendMessageToNPC target="this.id" variable="stimulus_hit" />
+                                </Sequence>
+                              </Else>
+                            </IsDeadCheck>
+                          </IfCondition>
+                          <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$suppressAssaultReactions | !$t_checkAssaultSuppression_result.suppressExternalReactions&quot;">
+                            <Sequence>
+                              <ProduceSound Sound="&quot;combatScript&quot;" Position="&quot;this.id&quot;" Multiplier="&quot;1.000000&quot;" />
+                              <Expression expressions="&quot;$assaultPerceptibleParams.conspicuousness = 1, &#10;$assaultPerceptibleParams.visibility = 1&quot;" />
+                              <SpawnExpiringPerceptibleVolume Expiration="&quot;6s&quot;" TimerType="&quot;GameTime&quot;" Position="&quot;this.id&quot;" Radius="&quot;1.000000&quot;" Height="&quot;1.000000&quot;" Label="&quot;assault&quot;" OnlyVisiblePointsFromCenter="&quot;false&quot;" PerceptibleParams="&quot;assaultPerceptibleParams&quot;" OutWuid="&quot;assaultPerceptibleVolume&quot;" />
+                              <IgnorePerception PerceptorObject="&quot;hit.attacker&quot;" PerceptibleObject="&quot;assaultPerceptibleVolume&quot;" IgnoreFor="&quot;-1&quot;" TimerType="&quot;GameTime&quot;" Uninterruptible="&quot;false&quot;" />
+                              <VarOperation varName="&quot;assaultVolumeData&quot;" targetVarName="&quot;&quot;" operation="&quot;Reinit&quot;" argument="&quot;&quot;" />
+                              <Expression expressions="&quot;$assaultVolumeData.attacker = $hit.attacker, &#10;$assaultVolumeData.victim = $this.id, &#10;$assaultVolumeData.kind = $enum:combatAttackKind.missile, &#10;$assaultVolumeData.victimKind = $enum:assaultVictimKind.npc&quot;" />
+                              <AddLink From="&quot;assaultPerceptibleVolume&quot;" To="&quot;assaultPerceptibleVolume&quot;" Tag="&quot;assaultVolumeData&quot;" Data="&quot;($assaultVolumeData)&quot;" LinkOpHandleMode="&quot;Error&quot;" />
+                            </Sequence>
+                          </IfCondition>
+                        </Sequence>
+                      </Selector>
+                    </IfCondition>
+                  </Switch>
+                </Sequence>
+              </Selector>
+            </ProcessMessage>
+          </While>
+          <While doFail="&quot;false&quot;" propagateChildFail="&quot;false&quot;" condition="&quot;true&quot;">
+            <StateMachineGate Who="&quot;&quot;" State="&quot;Hit&quot;" NegateTo="&quot;false&quot;" RunLogic="&quot;KeepRunning&quot;">
+              <Sequence>
+                <IncludeTree File="&quot;final/sb_combat.xml&quot;" Name="&quot;dropItems&quot;" nodeLabel="94943657" />
+                <IsDeadCheck SoulWUID="&quot;&quot;" FailSubtMissing="&quot;false&quot;" saveVersion="2">
+                  <Else canSkip="1">
+                    <IfCondition failOnCondition="&quot;false&quot;" condition="&quot;!$b_context[&apos;keepRunningDaycycleActivitiesWhileUnconscious&apos;]&quot;">
+                      <InstantSendMessageToNPC target="this.id" type="daycycle:restartRequest" values="reason($enum:daycycleHaltReason.combat), speed($enum:daycycleHaltSpeed.fast)" />
+                    </IfCondition>
+                  </Else>
+                </IsDeadCheck>
+                <StateMachineGate Who="&quot;&quot;" State="&quot;Hit&quot;" NegateTo="&quot;true&quot;" RunLogic="&quot;KeepRunning&quot;">
+                  <Success />
+                </StateMachineGate>
+              </Sequence>
+            </StateMachineGate>
+          </While>
+        </Parallel>
+      </Behavior>
+    </Root>
+    <ForestContainer />
+    <EditorData>
+      <Variables>
+        <Variable name="actualTime" comment="" />
+        <Variable name="assaultInformation" comment="" />
+        <Variable name="assaultPerceptibleParams" comment="" />
+        <Variable name="assaultPerceptibleVolume" comment="" />
+        <Variable name="assaultVolumeData" comment="" />
+        <Variable name="attacker" comment="" />
+        <Variable name="attackerInventory" comment="" />
+        <Variable name="attackerIsArmed" comment="" />
+        <Variable name="attackerIsHostile" comment="" />
+        <Variable name="attackerType" comment="" />
+        <Variable name="carrier" comment="" />
+        <Variable name="distSq" comment="" />
+        <Variable name="dotMissileHit" comment="" />
+        <Variable name="dotPlayerAttackNearMiss" comment="" />
+        <Variable name="health" comment="" />
+        <Variable name="healthStatusSubscription" comment="" />
+        <Variable name="healthStatusSubscriptionIterator" comment="" />
+        <Variable name="hit" comment="" />
+        <Variable name="hitReaction" comment="" />
+        <Variable name="hitRecipientIsEnemy" comment="" />
+        <Variable name="isDudeBestFriend" comment="" />
+        <Variable name="isHostile" comment="" />
+        <Variable name="isKnockOutByPlayer" comment="" />
+        <Variable name="isKnockOutByPlayerAndSeen" comment="" />
+        <Variable name="isPlayerInCombatWithAHostileToMe" comment="" />
+        <Variable name="lastHitByPlayer" comment="" />
+        <Variable name="playerArrowFlyby" comment="" />
+        <Variable name="playerAttackNearMiss" comment="" />
+        <Variable name="playerIsHostile" comment="" />
+        <Variable name="rider" comment="" />
+        <Variable name="riderPlayer" comment="" />
+        <Variable name="soundIntensityMultiplier" comment="" />
+        <Variable name="stamina" comment="" />
+        <Variable name="stimulus_hit" comment="" />
+        <Variable name="subscription" comment="" />
+        <Variable name="subscriptionIndex" comment="" />
+        <Variable name="subscriptions_break" comment="" />
+        <Variable name="suppressAssaultReactions" comment="" />
+        <Variable name="t_checkAssaultSuppression_entity1" comment="" />
+        <Variable name="t_checkAssaultSuppression_entity2" comment="" />
+        <Variable name="t_checkAssaultSuppression_result" comment="" />
+        <Variable name="t_checkHasMeleeWeaponDrawn_entity" comment="" />
+        <Variable name="t_checkIsDudeBestFriendForever_entity" comment="" />
+        <Variable name="t_dropItems_dropWeapons" comment="" />
+        <Variable name="time" comment="" />
+      </Variables>
+      <ForwardDeclarations>
+        <Variable name="b_context" type="_bool" values="" form="associative" />
+        <Variable name="b_deathTime" type="_int64" values="" form="single" />
+        <Variable name="b_haveActiveThreatsLastTime" type="_int64" values="" form="single" />
+        <Variable name="b_playerLastSeenTime" type="_int64" values="" form="single" />
+        <Variable name="b_soul" type="soul" values="" form="single" />
+        <Variable name="subscriptions" type="hit:subscription:subscription" values="" form="array" />
+      </ForwardDeclarations>
+      <Root editorPosX="4410" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+        <OutputBreakpoints />
+        <Behavior>
+          <Parallel editorPosX="4630" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+            <OutputBreakpoints />
+            <While editorPosX="4850" editorPosY="-2490" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+              <OutputBreakpoints />
+              <ProcessMessage editorPosX="5040" editorPosY="-2540" isCollapsed="0" hasInputBreakpoint="0" comment="Translate hitReaction sent by code to our abstract type" breakpointFlags="0">
+                <OutputBreakpoints />
+                <Sequence editorPosX="5260" editorPosY="-2540" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <IfCondition editorPosX="5330" editorPosY="-2720" isCollapsed="0" hasInputBreakpoint="0" comment="Stealth kill&gt; Const hit strength" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <Expression editorPosX="5530" editorPosY="-2720" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </Expression>
+                  </IfCondition>
+                  <IfCondition editorPosX="5380" editorPosY="-2630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <Selector editorPosX="5590" editorPosY="-2630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <IfCondition editorPosX="5780" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="Collisions" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <IsDeadCheck editorPosX="5980" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                          <OutputBreakpoints />
+                          <Then>
+                            <Sequence editorPosX="6180" editorPosY="-3390" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <GetType editorPosX="6300" editorPosY="-3500" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                              </GetType>
+                              <IfCondition editorPosX="6300" editorPosY="-3390" isCollapsed="0" hasInputBreakpoint="0" comment="Entity type: Animal" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <Sequence editorPosX="6510" editorPosY="-3390" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <GraphSearch editorPosX="6640" editorPosY="-3680" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <LinkTagFilter editorPosX="6980" editorPosY="-3680" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </LinkTagFilter>
+                                  </GraphSearch>
+                                  <IfCondition editorPosX="6640" editorPosY="-3390" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <InstantSendMessageToNPC editorPosX="6850" editorPosY="-3390" isCollapsed="0" hasInputBreakpoint="0" comment="player is attacker when kill NPC by horse" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </InstantSendMessageToNPC>
+                                  </IfCondition>
+                                </Sequence>
+                              </IfCondition>
+                            </Sequence>
+                          </Then>
+                          <Else>
+                            <Sequence editorPosX="6170" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <IsEnemy editorPosX="6290" editorPosY="-3160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                              </IsEnemy>
+                              <IfCondition editorPosX="6290" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="is not enemy" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <Sequence editorPosX="6490" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <IfCondition editorPosX="6610" editorPosY="-3160" isCollapsed="0" hasInputBreakpoint="0" comment="Awareness" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <HasPerceptionEnabled editorPosX="6800" editorPosY="-3160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                      <OutputBreakpoints />
+                                      <Then>
+                                        <HasPerceptionEnabled editorPosX="6990" editorPosY="-3160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                          <OutputBreakpoints />
+                                          <Then>
+                                            <InstantSendMessageToNPC editorPosX="7180" editorPosY="-3160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                            </InstantSendMessageToNPC>
+                                          </Then>
+                                        </HasPerceptionEnabled>
+                                      </Then>
+                                    </HasPerceptionEnabled>
+                                  </IfCondition>
+                                  <IfCondition editorPosX="6610" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="no combat and no suppressCollisionsBark" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <Selector editorPosX="7310" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                      <Sequence editorPosX="7430" editorPosY="-3280" isCollapsed="0" hasInputBreakpoint="0" comment="On horse" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                        <GraphSearch editorPosX="7550" editorPosY="-3370" isCollapsed="1" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                          <LinkTagFilter editorPosX="7690" editorPosY="-3420" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </LinkTagFilter>
+                                        </GraphSearch>
+                                        <IfCondition editorPosX="7550" editorPosY="-3280" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                          <IfCondition editorPosX="7760" editorPosY="-3280" isCollapsed="0" hasInputBreakpoint="0" comment="Strong hit" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                            <InstantSendMessageToNPC editorPosX="7960" editorPosY="-3280" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                            </InstantSendMessageToNPC>
+                                          </IfCondition>
+                                        </IfCondition>
+                                      </Sequence>
+                                      <IfElseCondition editorPosX="7430" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                        <OutputBreakpoints />
+                                        <Then>
+                                          <IfCondition editorPosX="7620" editorPosY="-3120" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                            <InstantSendMessageToNPC editorPosX="7820" editorPosY="-3120" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                            </InstantSendMessageToNPC>
+                                          </IfCondition>
+                                        </Then>
+                                        <Else>
+                                          <InstantSendMessageToNPC editorPosX="7620" editorPosY="-3040" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </InstantSendMessageToNPC>
+                                        </Else>
+                                      </IfElseCondition>
+                                    </Selector>
+                                  </IfCondition>
+                                </Sequence>
+                              </IfCondition>
+                            </Sequence>
+                          </Else>
+                        </IsDeadCheck>
+                      </IfCondition>
+                      <IfElseCondition editorPosX="5780" editorPosY="-2790" isCollapsed="0" hasInputBreakpoint="0" comment="Friendly fire" breakpointFlags="0" saveVersion="2">
+                        <OutputBreakpoints />
+                        <Then>
+                          <IfCondition editorPosX="5970" editorPosY="-2880" isCollapsed="0" hasInputBreakpoint="0" comment="FF: Dude (determined in code)" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <Success editorPosX="6180" editorPosY="-2880" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                            </Success>
+                          </IfCondition>
+                        </Then>
+                        <Else>
+                          <Sequence editorPosX="5970" editorPosY="-2790" isCollapsed="0" hasInputBreakpoint="0" comment="FF: NPC vs NPC" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <IsEnemy editorPosX="6090" editorPosY="-2790" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                            </IsEnemy>
+                            <IfCondition editorPosX="6090" editorPosY="-2700" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <Invertor editorPosX="6290" editorPosY="-2700" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <GraphSearch editorPosX="6410" editorPosY="-2700" isCollapsed="1" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <LinkTagFilter editorPosX="6560" editorPosY="-2770" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </LinkTagFilter>
+                                  <WUIDFilter editorPosX="6560" editorPosY="-2640" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </WUIDFilter>
+                                </GraphSearch>
+                              </Invertor>
+                            </IfCondition>
+                          </Sequence>
+                        </Else>
+                      </IfElseCondition>
+                      <InstantSendMessageToNPC editorPosX="5780" editorPosY="-2630" isCollapsed="0" hasInputBreakpoint="0" comment="No excuse" breakpointFlags="0">
+                        <OutputBreakpoints />
+                      </InstantSendMessageToNPC>
+                    </Selector>
+                  </IfCondition>
+                  <For editorPosX="5380" editorPosY="-2540" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <InstantSendMessageToNPC editorPosX="5570" editorPosY="-2540" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </InstantSendMessageToNPC>
+                  </For>
+                </Sequence>
+              </ProcessMessage>
+            </While>
+            <While editorPosX="4850" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+              <OutputBreakpoints />
+              <ProcessMessage editorPosX="5040" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="Translate playerAttackNearMiss sent by code to our abstract type" breakpointFlags="0">
+                <OutputBreakpoints />
+                <IfCondition editorPosX="5260" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <Sequence editorPosX="5470" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <NumericalOperation editorPosX="5590" editorPosY="-2120" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </NumericalOperation>
+                    <IfCondition editorPosX="5590" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <LuaGate editorPosX="5800" editorPosY="-2000" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                        <OutputBreakpoints />
+                        <Then>
+                          <InstantSendMessageToNPC editorPosX="5980" editorPosY="-2040" isCollapsed="0" hasInputBreakpoint="0" comment="Weapon: Generate a non-real hit" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </InstantSendMessageToNPC>
+                        </Then>
+                        <Else>
+                          <InstantSendMessageToNPC editorPosX="5980" editorPosY="-1930" isCollapsed="0" hasInputBreakpoint="0" comment="Unarmed: Bark" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </InstantSendMessageToNPC>
+                        </Else>
+                      </LuaGate>
+                    </IfCondition>
+                  </Sequence>
+                </IfCondition>
+              </ProcessMessage>
+            </While>
+            <While editorPosX="4850" editorPosY="-1400" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+              <OutputBreakpoints />
+              <ProcessMessage editorPosX="5040" editorPosY="-1400" isCollapsed="0" hasInputBreakpoint="0" comment="Translate playerArrowFlyby sent by code to our abstract type" breakpointFlags="0">
+                <OutputBreakpoints />
+                <IfCondition editorPosX="5270" editorPosY="-1400" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <InstantSendMessageToNPC editorPosX="5480" editorPosY="-1400" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                  </InstantSendMessageToNPC>
+                </IfCondition>
+              </ProcessMessage>
+            </While>
+            <While editorPosX="4830" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+              <OutputBreakpoints />
+              <ProcessMessage editorPosX="5020" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                <OutputBreakpoints />
+                <Selector editorPosX="5240" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <Sequence editorPosX="5370" editorPosY="-980" isCollapsed="0" hasInputBreakpoint="0" comment="Treat hits to a carried body as hits to the carrier" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <GraphSearch editorPosX="5490" editorPosY="-1140" isCollapsed="1" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <LinkTagFilter editorPosX="5630" editorPosY="-1190" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                      </LinkTagFilter>
+                    </GraphSearch>
+                    <Expression editorPosX="5490" editorPosY="-1060" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </Expression>
+                    <InstantSendMessageToNPC editorPosX="5490" editorPosY="-980" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </InstantSendMessageToNPC>
+                  </Sequence>
+                  <Sequence editorPosX="5370" editorPosY="-760" isCollapsed="0" hasInputBreakpoint="0" comment="We&apos;re dead for some time already" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <GetTime editorPosX="5490" editorPosY="-850" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </GetTime>
+                    <IfCondition editorPosX="5490" editorPosY="-760" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <Success editorPosX="5700" editorPosY="-760" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                      </Success>
+                    </IfCondition>
+                  </Sequence>
+                  <Sequence editorPosX="5360" editorPosY="-20" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <ExecuteLua editorPosX="5490" editorPosY="-610" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </ExecuteLua>
+                    <IsDeadCheck editorPosX="5490" editorPosY="-480" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                      <OutputBreakpoints />
+                      <Then>
+                        <IfCondition editorPosX="5680" editorPosY="-480" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <InstantSendMessageToNPC editorPosX="5880" editorPosY="-480" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </InstantSendMessageToNPC>
+                        </IfCondition>
+                      </Then>
+                    </IsDeadCheck>
+                    <Selector editorPosX="5490" editorPosY="-160" isCollapsed="0" hasInputBreakpoint="0" comment="Check Dude BFF" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <IfCondition editorPosX="5610" editorPosY="-240" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <Sequence editorPosX="5810" editorPosY="-240" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <Expression editorPosX="5930" editorPosY="-330" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </Expression>
+                          <IncludeTree editorPosX="5930" editorPosY="-240" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </IncludeTree>
+                          <Expression editorPosX="5930" editorPosY="-160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </Expression>
+                        </Sequence>
+                      </IfCondition>
+                      <Expression editorPosX="5610" editorPosY="-160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                      </Expression>
+                    </Selector>
+                    <Switch editorPosX="5490" editorPosY="170" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                      <IfCondition editorPosX="5620" editorPosY="170" isCollapsed="0" hasInputBreakpoint="0" comment="HitType: Melee / Stealth-kill" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <Sequence editorPosX="5830" editorPosY="170" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <Expression editorPosX="5950" editorPosY="-50" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                          </Expression>
+                          <IfCondition editorPosX="5950" editorPosY="40" isCollapsed="0" hasInputBreakpoint="0" comment="check NPC is knock out" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <IsUnconsciousCheck editorPosX="6150" editorPosY="40" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                              <OutputBreakpoints />
+                              <Then>
+                                <Sequence editorPosX="6340" editorPosY="40" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <GetTime editorPosX="6470" editorPosY="-60" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </GetTime>
+                                  <Expression editorPosX="6470" editorPosY="40" isCollapsed="0" hasInputBreakpoint="0" comment="isKnockOutByPlayer - true" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </Expression>
+                                  <IfCondition editorPosX="6470" editorPosY="130" isCollapsed="0" hasInputBreakpoint="0" comment="time is now 4000ms" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <Expression editorPosX="6690" editorPosY="130" isCollapsed="0" hasInputBreakpoint="0" comment="isKnockOutByPlayerAndSeen - true" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </Expression>
+                                  </IfCondition>
+                                </Sequence>
+                              </Then>
+                            </IsUnconsciousCheck>
+                          </IfCondition>
+                          <Sequence editorPosX="6910" editorPosY="200" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <SuppressFailure editorPosX="7040" editorPosY="-1520" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <Sequence editorPosX="7180" editorPosY="-1520" isCollapsed="0" hasInputBreakpoint="0" comment="Check whether attacker armed" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <Expression editorPosX="7300" editorPosY="-1600" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                                <IncludeTree editorPosX="7300" editorPosY="-1510" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </IncludeTree>
+                                <Expression editorPosX="7300" editorPosY="-1430" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                              </Sequence>
+                            </SuppressFailure>
+                            <Sequence editorPosX="7040" editorPosY="-1210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <Expression editorPosX="7160" editorPosY="-1290" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                              </Expression>
+                              <Selector editorPosX="7160" editorPosY="-1210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <IncludeTree editorPosX="8140" editorPosY="-1210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </IncludeTree>
+                                <Expression editorPosX="7350" editorPosY="-1170" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                              </Selector>
+                            </Sequence>
+                            <IfCondition editorPosX="7120" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="is knock and last seen check" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <IfCondition editorPosX="7330" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="Dude: Reputation hit" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <IfElseCondition editorPosX="7540" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                  <OutputBreakpoints />
+                                  <Else>
+                                    <IfCondition editorPosX="7760" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                      <LuaGate editorPosX="7980" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                        <OutputBreakpoints />
+                                        <Then>
+                                          <Success editorPosX="8170" editorPosY="-990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </Success>
+                                        </Then>
+                                        <Else>
+                                          <Switch editorPosX="8170" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                            <IfCondition editorPosX="8300" editorPosY="-1070" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                              <SetReputationNPC editorPosX="8510" editorPosY="-1070" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </SetReputationNPC>
+                                            </IfCondition>
+                                            <IfCondition editorPosX="8300" editorPosY="-990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                              <SetReputationNPC editorPosX="8510" editorPosY="-990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </SetReputationNPC>
+                                            </IfCondition>
+                                            <IfCondition editorPosX="8300" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                              <SetReputationNPC editorPosX="8510" editorPosY="-910" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </SetReputationNPC>
+                                            </IfCondition>
+                                            <DefaultBranch>
+                                              <SetReputationNPC editorPosX="8300" editorPosY="-830" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </SetReputationNPC>
+                                            </DefaultBranch>
+                                          </Switch>
+                                        </Else>
+                                      </LuaGate>
+                                    </IfCondition>
+                                  </Else>
+                                </IfElseCondition>
+                              </IfCondition>
+                            </IfCondition>
+                            <Selector editorPosX="7040" editorPosY="200" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <IfCondition editorPosX="7240" editorPosY="-630" isCollapsed="0" hasInputBreakpoint="0" comment="Dude: Reputation-based prevent" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <Sequence editorPosX="7430" editorPosY="-630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <IsEnemy editorPosX="7550" editorPosY="-730" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </IsEnemy>
+                                  <IfElseCondition editorPosX="7550" editorPosY="-630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                    <OutputBreakpoints />
+                                    <Then>
+                                      <Fail editorPosX="7750" editorPosY="-740" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </Fail>
+                                    </Then>
+                                    <Else>
+                                      <IfCondition editorPosX="7750" editorPosY="-630" isCollapsed="0" hasInputBreakpoint="0" comment="Do not bark in combat (we may be in a custom fight with the player)" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                        <Sequence editorPosX="7950" editorPosY="-630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                          <InstantSendMessageToNPC editorPosX="8070" editorPosY="-680" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </InstantSendMessageToNPC>
+                                          <Fail editorPosX="8070" editorPosY="-530" isCollapsed="0" hasInputBreakpoint="0" comment="Fail: We want to produce a stimulus nevertheless" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </Fail>
+                                        </Sequence>
+                                      </IfCondition>
+                                    </Else>
+                                  </IfElseCondition>
+                                </Sequence>
+                              </IfCondition>
+                              <IfCondition editorPosX="7240" editorPosY="-430" isCollapsed="0" hasInputBreakpoint="0" comment="Dude BFF" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <Success editorPosX="7440" editorPosY="-430" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Success>
+                              </IfCondition>
+                              <Sequence editorPosX="7240" editorPosY="470" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <IfCondition editorPosX="7370" editorPosY="-200" isCollapsed="0" hasInputBreakpoint="0" comment="Sound" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <Sequence editorPosX="7580" editorPosY="-200" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <IfElseCondition editorPosX="7700" editorPosY="-290" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                      <OutputBreakpoints />
+                                      <Then>
+                                        <ExecuteLua editorPosX="7900" editorPosY="-330" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                        </ExecuteLua>
+                                      </Then>
+                                      <Else>
+                                        <Expression editorPosX="7900" editorPosY="-250" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                        </Expression>
+                                      </Else>
+                                    </IfElseCondition>
+                                    <ProduceSound editorPosX="7700" editorPosY="-200" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </ProduceSound>
+                                  </Sequence>
+                                </IfCondition>
+                                <IfCondition editorPosX="7370" editorPosY="30" isCollapsed="0" hasInputBreakpoint="0" comment="Cue music lalala" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <ExecuteSoundTrigger editorPosX="7570" editorPosY="30" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                  </ExecuteSoundTrigger>
+                                </IfCondition>
+                                <IfCondition editorPosX="7370" editorPosY="210" isCollapsed="0" hasInputBreakpoint="0" comment="lastHitByPlayer update" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                  <Sequence editorPosX="7670" editorPosY="210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <VarOperation editorPosX="7790" editorPosY="-60" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </VarOperation>
+                                    <GetTime editorPosX="7790" editorPosY="40" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </GetTime>
+                                    <IfElseCondition editorPosX="7790" editorPosY="130" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                      <OutputBreakpoints />
+                                      <Then>
+                                        <Expression editorPosX="7980" editorPosY="50" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                        </Expression>
+                                      </Then>
+                                      <Else>
+                                        <IfElseCondition editorPosX="7980" editorPosY="130" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                          <OutputBreakpoints />
+                                          <Then>
+                                            <Expression editorPosX="8170" editorPosY="130" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                            </Expression>
+                                          </Then>
+                                          <Else>
+                                            <Expression editorPosX="8170" editorPosY="210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                              <OutputBreakpoints />
+                                            </Expression>
+                                          </Else>
+                                        </IfElseCondition>
+                                      </Else>
+                                    </IfElseCondition>
+                                    <AddLink editorPosX="7790" editorPosY="210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </AddLink>
+                                  </Sequence>
+                                </IfCondition>
+                                <IfElseCondition editorPosX="7370" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                  <OutputBreakpoints />
+                                  <Then>
+                                    <IfElseCondition editorPosX="7570" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="Stimulus" breakpointFlags="0" saveVersion="2">
+                                      <OutputBreakpoints />
+                                      <Else>
+                                        <IsDeadCheck editorPosX="7770" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                          <OutputBreakpoints />
+                                          <Else>
+                                            <IsUnconsciousCheck editorPosX="7960" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                              <OutputBreakpoints />
+                                              <Else>
+                                                <Sequence editorPosX="8150" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                  <OutputBreakpoints />
+                                                  <VarOperation editorPosX="8270" editorPosY="350" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                    <OutputBreakpoints />
+                                                  </VarOperation>
+                                                  <Expression editorPosX="8270" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                    <OutputBreakpoints />
+                                                  </Expression>
+                                                  <IfElseCondition editorPosX="8270" editorPosY="530" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                                    <OutputBreakpoints />
+                                                    <Then>
+                                                      <Expression editorPosX="8460" editorPosY="450" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                        <OutputBreakpoints />
+                                                      </Expression>
+                                                    </Then>
+                                                    <Else>
+                                                      <Expression editorPosX="8460" editorPosY="530" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                        <OutputBreakpoints />
+                                                      </Expression>
+                                                    </Else>
+                                                  </IfElseCondition>
+                                                  <InstantSendMessageToNPC editorPosX="8270" editorPosY="610" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                    <OutputBreakpoints />
+                                                  </InstantSendMessageToNPC>
+                                                </Sequence>
+                                              </Else>
+                                            </IsUnconsciousCheck>
+                                          </Else>
+                                        </IsDeadCheck>
+                                      </Else>
+                                    </IfElseCondition>
+                                  </Then>
+                                  <Else>
+                                    <IfCondition editorPosX="7570" editorPosY="630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                      <Sequence editorPosX="7780" editorPosY="630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                        <Expression editorPosX="7900" editorPosY="630" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                        </Expression>
+                                        <CreateInformation editorPosX="7900" editorPosY="720" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                          <OutputBreakpoints />
+                                        </CreateInformation>
+                                      </Sequence>
+                                    </IfCondition>
+                                  </Else>
+                                </IfElseCondition>
+                                <IfElseCondition editorPosX="7370" editorPosY="860" isCollapsed="0" hasInputBreakpoint="0" comment="Volume" breakpointFlags="0" saveVersion="2">
+                                  <OutputBreakpoints />
+                                  <Then>
+                                    <Success editorPosX="7570" editorPosY="780" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </Success>
+                                  </Then>
+                                  <Else>
+                                    <Sequence editorPosX="7570" editorPosY="860" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                      <Expression editorPosX="7690" editorPosY="860" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </Expression>
+                                      <SpawnExpiringPerceptibleVolume editorPosX="7690" editorPosY="940" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </SpawnExpiringPerceptibleVolume>
+                                      <IgnorePerception editorPosX="7690" editorPosY="1110" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </IgnorePerception>
+                                      <IgnorePerception editorPosX="7690" editorPosY="1220" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </IgnorePerception>
+                                      <VarOperation editorPosX="7690" editorPosY="1330" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </VarOperation>
+                                      <Expression editorPosX="7690" editorPosY="1430" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </Expression>
+                                      <IfElseCondition editorPosX="7690" editorPosY="1510" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                        <OutputBreakpoints />
+                                        <Then>
+                                          <Expression editorPosX="7890" editorPosY="1490" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                            <OutputBreakpoints />
+                                          </Expression>
+                                        </Then>
+                                        <Else>
+                                          <IfElseCondition editorPosX="7890" editorPosY="1570" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                            <OutputBreakpoints />
+                                            <Then>
+                                              <Expression editorPosX="8080" editorPosY="1530" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </Expression>
+                                            </Then>
+                                            <Else>
+                                              <Expression editorPosX="8080" editorPosY="1610" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                                <OutputBreakpoints />
+                                              </Expression>
+                                            </Else>
+                                          </IfElseCondition>
+                                        </Else>
+                                      </IfElseCondition>
+                                      <AddLink editorPosX="7690" editorPosY="1590" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                        <OutputBreakpoints />
+                                      </AddLink>
+                                    </Sequence>
+                                  </Else>
+                                </IfElseCondition>
+                              </Sequence>
+                            </Selector>
+                          </Sequence>
+                        </Sequence>
+                      </IfCondition>
+                      <IfCondition editorPosX="5630" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="HitType: Missile" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <Selector editorPosX="5830" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                          <IfCondition editorPosX="5950" editorPosY="2240" isCollapsed="0" hasInputBreakpoint="0" comment="Dude specific" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <IncludeTree editorPosX="8290" editorPosY="2240" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                              <OutputBreakpoints />
+                            </IncludeTree>
+                          </IfCondition>
+                          <Sequence editorPosX="5950" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                            <OutputBreakpoints />
+                            <Sequence editorPosX="6080" editorPosY="2810" isCollapsed="0" hasInputBreakpoint="0" comment="Assault suppression" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <Expression editorPosX="6200" editorPosY="2730" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                              </Expression>
+                              <Selector editorPosX="6200" editorPosY="2810" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <IncludeTree editorPosX="7080" editorPosY="2810" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </IncludeTree>
+                                <Expression editorPosX="6320" editorPosY="2850" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                              </Selector>
+                            </Sequence>
+                            <IfCondition editorPosX="6080" editorPosY="3030" isCollapsed="0" hasInputBreakpoint="0" comment="Cue music lalala" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <ExecuteSoundTrigger editorPosX="6280" editorPosY="3030" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                              </ExecuteSoundTrigger>
+                            </IfCondition>
+                            <IfCondition editorPosX="6080" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="Stimulus" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <IsDeadCheck editorPosX="6290" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                                <OutputBreakpoints />
+                                <Else>
+                                  <Sequence editorPosX="6480" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                    <OutputBreakpoints />
+                                    <VarOperation editorPosX="6610" editorPosY="3210" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </VarOperation>
+                                    <Expression editorPosX="6610" editorPosY="3310" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </Expression>
+                                    <InstantSendMessageToNPC editorPosX="6610" editorPosY="3390" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                      <OutputBreakpoints />
+                                    </InstantSendMessageToNPC>
+                                  </Sequence>
+                                </Else>
+                              </IsDeadCheck>
+                            </IfCondition>
+                            <IfCondition editorPosX="6080" editorPosY="3520" isCollapsed="0" hasInputBreakpoint="0" comment="Volume + sound" breakpointFlags="0">
+                              <OutputBreakpoints />
+                              <Sequence editorPosX="6290" editorPosY="3520" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                <OutputBreakpoints />
+                                <ProduceSound editorPosX="6410" editorPosY="3420" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </ProduceSound>
+                                <Expression editorPosX="6410" editorPosY="3520" isCollapsed="0" hasInputBreakpoint="0" comment="Volume" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                                <SpawnExpiringPerceptibleVolume editorPosX="6410" editorPosY="3600" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </SpawnExpiringPerceptibleVolume>
+                                <IgnorePerception editorPosX="6410" editorPosY="3770" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </IgnorePerception>
+                                <VarOperation editorPosX="6410" editorPosY="3880" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </VarOperation>
+                                <Expression editorPosX="6410" editorPosY="3980" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </Expression>
+                                <AddLink editorPosX="6410" editorPosY="4060" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                                  <OutputBreakpoints />
+                                </AddLink>
+                              </Sequence>
+                            </IfCondition>
+                          </Sequence>
+                        </Selector>
+                      </IfCondition>
+                    </Switch>
+                  </Sequence>
+                </Selector>
+              </ProcessMessage>
+            </While>
+            <While editorPosX="4810" editorPosY="4990" isCollapsed="0" hasInputBreakpoint="0" comment="Hit (NPC state machine)" breakpointFlags="0">
+              <OutputBreakpoints />
+              <StateMachineGate editorPosX="5000" editorPosY="4990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                <OutputBreakpoints />
+                <Sequence editorPosX="5270" editorPosY="4990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                  <OutputBreakpoints />
+                  <IncludeTree editorPosX="6070" editorPosY="4990" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                  </IncludeTree>
+                  <IsDeadCheck editorPosX="5400" editorPosY="5080" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0" saveVersion="2">
+                    <OutputBreakpoints />
+                    <Else>
+                      <IfCondition editorPosX="5600" editorPosY="5080" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                        <OutputBreakpoints />
+                        <InstantSendMessageToNPC editorPosX="5830" editorPosY="5080" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                          <OutputBreakpoints />
+                        </InstantSendMessageToNPC>
+                      </IfCondition>
+                    </Else>
+                  </IsDeadCheck>
+                  <StateMachineGate editorPosX="5400" editorPosY="5160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                    <OutputBreakpoints />
+                    <Success editorPosX="5670" editorPosY="5160" isCollapsed="0" hasInputBreakpoint="0" comment="" breakpointFlags="0">
+                      <OutputBreakpoints />
+                    </Success>
+                  </StateMachineGate>
+                </Sequence>
+              </StateMachineGate>
+            </While>
+          </Parallel>
+        </Behavior>
+      </Root>
+      <Forest />
+      <Comments />
+    </EditorData>
+  </BehaviorTree>
+</BehaviorTrees>
